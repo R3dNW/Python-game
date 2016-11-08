@@ -1,87 +1,137 @@
+#Github copy
 import random
 
 Floor = 0
-
-
 class Item:
     name = ""
+    catogory = ""
+    effect = 0
+    hold_space = ""
 
-
-class Ally:
+    
+class Party:
     name = ""
-    level = 1
-    life = level * 4
-    base_strength = level * 3
-    base_defence = level * 2
-    experience = 0
-    level = int(experience / 10)
+    level = 3
+    life = 10
+    strength = 10
+    defence = 10
+    experience = 10
+    level = int(experience/10)
+    inventory = {}
+    life_bonus = 200
+    stregth_bonus = 200
+    defence_bonus = 200
 
-    def bonuses(self):
-        print()
+
+            
+    def stats(self):
+        self.life = (self.level*4) + self.life_bonus
+        self.strength = (self.level*4) + self.stregth_bonus
+        self.defence = (self.level*2) + self.defence_bonus
+        
 
 
 class Enemy:
-    level = abs(Floor + random.randint(-2, 2))
+    level = abs(Floor + random.randint(-2,2))+1
     name = ""
-    life = level * 3
-    strength = level * 3
-    defence = level * 2
+    life = level*3
+    strength = level*3
+    defence = level*2
+
+    
 
     def attack(self):
-        victim = random.randint(1, 4)
-
-    def defend(self):
+        victim = random.randint(0,partylist.len())
+        
+    def defend(self,i):
         print("Ouch!")
-        self.life = self.life - 1
-
-    def check_life(self):
+        self.life = self.life
+        
+    def checklife(self):
         if self.life <= 0:
-            print(self.name + " is dead")
+            print(Name + " is dead")
         else:
-            print(str(self.life) + " life left")
-
-
-def battle():
-    while party_members > 0 and enemy_numbers > 0:
-        action = input("""What will you do?
-    Attack
-    Defend
-    Item
-    Run(15%)
-    """)
-
-
-ally1 = Ally()
-ally2 = Ally()
-ally3 = Ally()
-ally4 = Ally()
-
-party = [ally1, ally2, ally3, ally4]
-
+            print(str(self.life)+" life left")
+            
 
 def create_party():
+    global ally_dic
+    global party_list
+    ally1 = Party()
+    ally2 = Party()
+    ally3 = Party()
+    ally4 = Party()
+    party_list = [ally1,ally2,ally3,ally4]
     print("You have 4 party members ")
-    for members in party:
+    for members in party_list:
         members.name = input("Name of ally: ")
+        
+    ally_dic = {ally1.name:ally1,ally2.name:ally2,ally3.name:ally3,ally4.name:ally4}
+
+def create_enemy():
+    global enemy_list
+    enemy_list = []
+    level = abs(Floor + random.randint(-2,2))
+    for i in range(0,level):
+        enemy_list.append(0)
+        enemy_list[i] = Enemy()
+    
+create_party()       
+create_enemy()
 
 
-create_party()
-print(party[1].name
-      )
+        
 
-enemy1 = Enemy()
-enemy2 = Enemy()
+def ally_battle():
+    while len(party_list) > 0 and len(enemy_list) > 0:
+        for i in range(0,len(enemy_list)):
+            enemy_list[i].name = i
+            print (enemy_list[i].name)
+            print (enemy_list[i].life)
+        for i in party_list:
+            action = input("""What will you do?
+        Attack
+        Defend
+        Item
+        Run(15%)
+        """)
+            action = action.upper()
+            if action == "A" or action == "ATTACK":
+                i.stats()
+                damage = i.strength
+                victim = int(input("Who do you want to attack? "))
+                print(enemy_list[victim].life)
+                print("defence = " + str(enemy_list[victim].defence) + "and attack power = " + str(damage))
+                if enemy_list[victim].defence > int(damage):
+                    print("Attack too weak, 0 damage!")
+                    print(enemy_list[victim].life)
+                else:
+                    enemy_list[victim].life = enemy_list[victim].life - (damage - enemy_list[victim].defence)
+                    print(enemy_list[victim].life)
+                    if enemy_list[victim].life <= 0:
+                        enemy_list.pop(victim)
+                    else:
+                        print(enemy_list[victim.life])
+        for i in enemy_list:
+            damage = i.strength
+            victim = random.randint(0,len(party_list))
+            print(party_list[victim].name)
+            print(party_list[victim].life)
+            if party_list[victim].defence > damage:
+                print("Attack too weak, 0 damage!")
+                print(party_list[victim].life)
+            else:
+                party_list[victim].life = party_list[victim].life - (damage - party_list[victim].defence)
+                print(party_list[victim].life)
+                if party_list[victim] <= 0:
+                    party_list.pop(victim)
+                else:
+                    print(party_list[victim.life])
 
-fight = input("""You are against two enemys.
-What would you like to do?
-    Fight
-    Run(15%)""")
-fight = fight.upper()
-if fight == "F" or fight == "FIGHT":
-    battle()
-elif fight == "R" or fight == "RUN":
-    RNG = random.randint(0, 100)
-    if RNG > 15:
-        print("You escaped successfully!")
-    else:
-        print("You couldn't escape!")
+
+
+
+
+ally_battle()
+
+
