@@ -79,6 +79,8 @@ def create_enemy():
     for i in range(0,level):
         enemy_list.append(0)
         enemy_list[i] = Enemy()
+
+names_list = ["Jerry","Bob","Karl","Carl","Lebron","James","Steve","Joe","Jack","John","Amy","Sarah","Anne","Micheal","Ian",]
     
 create_party()       
 create_enemy()
@@ -100,8 +102,8 @@ def ally_battle():
                 i.stats()
                 damage = i.strength
                 for i in range(0,len(enemy_list)):
-                    enemy_list[i].name = str(i)
-                    print ("Grunt number " + enemy_list[i].name)
+                    enemy_list[i].name = names_list[i]
+                    print (enemy_list[i].name + "[" + str(i) + "]" )
                     print ("Life: " + str(enemy_list[i].life))
                 victim = int(input("Who do you want to attack? "))
                 
@@ -115,8 +117,15 @@ def ally_battle():
                     print(enemy_list[victim].life)
                     if enemy_list[victim].life <= 0:
                         enemy_list.pop(victim)
+                        if len(enemy_list) <= 0 or len(enemy_list):
+                            break
                     else:
                         print(enemy_list[victim.life])
+
+        if len(enemy_list) <= 0 or len(enemy_list):
+            break
+
+                        
         for i in enemy_list:
             damage = i.strength
             victim = random.randint(0,len(party_list))
@@ -130,13 +139,21 @@ def ally_battle():
                 print(party_list[victim].life)
                 if party_list[victim] <= 0:
                     party_list.pop(victim)
+                    if len(enemy_list) <= 0 or len(enemy_list):
+                        break
                 else:
                     print(party_list[victim.life])
-
+                    
+        if len(enemy_list) <= 0 or len(enemy_list):
+            break
 
 
 
 
 ally_battle()
+
+print("It ended!")
+
+
 
 
