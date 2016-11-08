@@ -84,10 +84,6 @@ create_enemy()
 
 def ally_battle():
     while len(party_list) > 0 and len(enemy_list) > 0:
-        for i in range(0,len(enemy_list)):
-            enemy_list[i].name = i
-            print (enemy_list[i].name)
-            print (enemy_list[i].life)
         for i in party_list:
             action = input("""What will you do?
         Attack
@@ -99,7 +95,12 @@ def ally_battle():
             if action == "A" or action == "ATTACK":
                 i.stats()
                 damage = i.strength
+                for i in range(0,len(enemy_list)):
+                    enemy_list[i].name = str(i)
+                    print ("Grunt number " + enemy_list[i].name)
+                    print ("Life: " + str(enemy_list[i].life))
                 victim = int(input("Who do you want to attack? "))
+                
                 print(enemy_list[victim].life)
                 print("defence = " + str(enemy_list[victim].defence) + "and attack power = " + str(damage))
                 if enemy_list[victim].defence > int(damage):
