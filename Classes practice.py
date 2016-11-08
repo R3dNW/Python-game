@@ -72,6 +72,10 @@ def create_enemy():
     global enemy_list
     enemy_list = []
     level = abs(Floor + random.randint(-2,2))
+    if level == 0:
+        level = level + 1
+    else:
+        level = level
     for i in range(0,level):
         enemy_list.append(0)
         enemy_list[i] = Enemy()
