@@ -4,11 +4,12 @@ import random
 Floor = 0
 class Item:
     name = ""
-    effect = ""
+    description = ""
+    effect_type = ""
+    boost_type = ""
     potency = 0
-    hold_space = ""
-    
-    
+
+
 class Party:
     name = ""
     level = 3
@@ -18,9 +19,9 @@ class Party:
     experience = 10
     level = int(experience/10)
     inventory = {}
-    life_bonus = 200
-    stregth_bonus = 200
-    defence_bonus = 200
+    life_bonus = 0
+    stregth_bonus = 0
+    defence_bonus = 0
     passive_inventory = []
     active_inventory = []
 
@@ -31,36 +32,43 @@ class Party:
                     self.life_bonus = i.potencey
                 elif i.type == "Defence":
                     self.defence_bonus = i.potencey
-                elif i.type = "Strength":
+                elif i.type == "Strength":
                     self.strength_bonus = i.potencey
                 else:
                     life_bonus = 0
                     stregth_bonus = 0
                     defence_bonus = 0
-    def item():
+    def item(self):
         counter = 0
 
-        Health_potion = Items()
-        Health_potion.name = "Health potion--"
-        Health_potion.description = "  It heals you by 3 health points."
+        Potion_file = open("Items list.txt","r")
+        Potion = Potion_file.read()
+        Potion_file.close()
+        Potion = Potion.split("\n")
+        Potion_file = open("Items list.txt","r")
 
-        Better_health_potion = Items()
-        Better_health_potion.name = "Better health potion--"
-        Better_health_potion.description = "  It heals you by 5 health points."
+        items = []
 
-        Defence_potion = Items()
-        Defence_potion.name = "Defence potion--"
-        Defence_potion.description = "  It raises your defence by 3 points."
+        for line in range(0,len(Potion)):
+            item = Item()
+            potions = Potion_file.readline()
+            potions = potions.strip("\n")
+            potions = potions.split(";")
+            item.name = potions[0]
+            item.description = potions[1]
+            item.effect_type = potions[2]
+            item.boost_type = potions[3]
+            item.potency = int(potions[4])
+            items.append(item)
 
 
-        list1 = [Health_potion,Better_health_potion,Defence_potion]
         b = 1
 
         print("Use 'w' and 's' to search and use 'x' to select.")
 
         while b != "x":
             b = input()
-    
+
             clear()
             if b == "w":
                 counter = counter - 1
@@ -68,32 +76,38 @@ class Party:
                 counter = counter + 1
             elif b == "x":
                 break
-        
+
             else:
                 c = 0
 
-            for i in range(0,len(list1)):
+            for i in range(0,len(items)):
 
-        
+
                 if i == counter:
-                    print("--" + list1[i].name)
-                    a = list1[i].description
+                    print("--" + items[i].name)
+                    a = items[i].description
                     print(a)
-        
+
                 else:
-                    print(list1[i].name)
+                    print(items[i].name)
                 print()
-        
-        print("You selected: " + list1[counter].name)
-        print("            " + list1[counter].description)
-    
-            
+
+        print("You selected: " + items[counter].name)
+        print("            " + items[counter].description)
+
+        if items[counter].boost_type == "Health":
+            self.life_bonus = self.life_bonus + items[counter].potency
+        elif items[counter].boost_type == "Defence":
+            self.defence_bonus = self.defence_bonus + items[counter].potency
+        elif items[counter].boost_type == "Strength":
+            self.strength_bonus = self.strength_bonus + items[counter].potency
+
+
     def stats(self):
         self.life = (self.level*4) + self.life_bonus
         self.strength = (self.level*4) + self.stregth_bonus
         self.defence = (self.level*2) + self.defence_bonus
-        
-    def item()
+
 
 class Enemy:
     level = abs(Floor + random.randint(-2,2))+1
@@ -102,21 +116,21 @@ class Enemy:
     strength = level*3
     defence = level*2
 
-    
+
 
     def attack(self):
         victim = random.randint(0,partylist.len())
-        
+
     def defend(self,i):
         print("Ouch!")
         self.life = self.life
-        
+
     def checklife(self):
         if self.life <= 0:
             print(Name + " is dead")
         else:
             print(str(self.life)+" life left")
-            
+
 def clear():
     print("\n"*50)
 
@@ -130,7 +144,7 @@ def create_party():
     party_list = [ally1,ally2,ally3,ally4]
     print("You have 4 party members ")
     for members in party_list:
-        members.name = input("Name of ally: ")        
+        members.name = input("Name of ally: ")
     ally_dic = {ally1.name:ally1,ally2.name:ally2,ally3.name:ally3,ally4.name:ally4}
 
 def create_enemy():
@@ -146,16 +160,17 @@ def create_enemy():
         enemy_list.append(0)
         enemy_list[i] = Enemy()
         names_list = ["Jerry","Bob","Karl","Carl","Lebron","James","Steve","Joe","Jack","John","Amy","Sarah","Anne","Micheal","Ian",]
-    
-create_party()       
+
+create_party()
 create_enemy()
 
 
-        
+
 
 def battle():
     while len(party_list) > 0 and len(enemy_list) > 0:
         for i in party_list:
+            i.stats()
             action = input("""What will you do?
         Attack
         Defend
@@ -171,7 +186,7 @@ def battle():
                     print (enemy_list[i].name + "[" + str(i) + "]" )
                     print ("Life: " + str(enemy_list[i].life))
                 victim = int(input("Who do you want to attack? "))
-                
+
                 print(enemy_list[victim].life)
                 print("defence = " + str(enemy_list[victim].defence) + "and attack power = " + str(damage))
                 if enemy_list[victim].defence > int(damage):
@@ -188,10 +203,19 @@ def battle():
                     else:
                         print(enemy_list[victim.life])
 
+            elif action == "D" or action == "DEFENCE":
+                i.defence = i.defence*2
+
+            elif action == "I" or action == "ITEM":
+                print(i.life)
+                i.item()
+                i.stats()
+                print(i.life)
+
         if len(enemy_list) <= 0 or len(party_list) <= 0:
             break
 
-                        
+
         for i in enemy_list:
             damage = i.strength
             victim = random.randint(0,len(party_list))
@@ -209,22 +233,18 @@ def battle():
                         break
                 else:
                     print(party_list[victim.life])
-                    
+
         if len(enemy_list) <= 0 or len(enemy_list):
             break
+        else:
+            print()
 
-            elif action == "D" or action == "DEFENCE":
-                i.defence = i.defence*2
-
-            elif action == "I" or action == "ITEM":
-                i.item()
-                
+            
 
 
-        
+
 battle()
 
 print("It ended!")
-
 
 
