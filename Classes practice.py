@@ -201,7 +201,7 @@ def battle():
                         if len(enemy_list) <= 0 or len(party_list) <= 0:
                             break
                     else:
-                        print(enemy_list[victim.life])
+                        print(enemy_list[victim].life)
 
             elif action == "D" or action == "DEFENCE":
                 i.defence = i.defence*2
@@ -227,7 +227,7 @@ def battle():
             else:
                 party_list[victim].life = party_list[victim].life - (damage - party_list[victim].defence)
                 print(party_list[victim].life)
-                if party_list[victim] <= 0:
+                if party_list[victim].life <= 0:
                     party_list.pop(victim)
                     if len(enemy_list) <= 0 or len(enemy_list):
                         break
