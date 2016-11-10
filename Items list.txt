@@ -1,0 +1,3 @@
+Health Potion;Heals 10 LIFE points;A;Health;10
+Better Health Potion;Heals 20 LIFE points;Health;A;20
+Defence Potion;Raises DEFENCE by 3 points;A;Defence;3
