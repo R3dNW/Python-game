@@ -1,5 +1,4 @@
 #Github copy
-import random
 
 class Item:
     name = ""
@@ -46,10 +45,10 @@ class Party:
     level = int(experience/10)
     inventory = {}
     life_bonus = 0
-    stregth_bonus = 0
+    strength_bonus = 0
     defence_bonus = 0
     passive_inventory = []
-    active_inventory = []
+    active_inventory = [items[5]]
 
     def bonus(self):
         for i in self.passive_inventory:
@@ -60,10 +59,7 @@ class Party:
                     self.defence_bonus = i.potencey
                 elif i.type == "Strength":
                     self.strength_bonus = i.potencey
-                else:
-                    life_bonus = 0
-                    stregth_bonus = 0
-                    defence_bonus = 0
+
     def item(self):
         counter = 0
 
@@ -106,14 +102,19 @@ class Party:
             self.life_bonus = self.life_bonus + self.active_inventory[counter].potency
         elif self.active_inventory[counter].boost_type == "Defence":
             self.defence_bonus = self.defence_bonus + self.active_inventory[counter].potency
-        elif self.active_inventory[counter].boost_type == "Strength":
-            self.strength_bonus = self.strength_bonus + self.active_inventory[counter].potency
+        elif self.active_inventory[counter].boost_type == "Strength":
+            self.strength_bonus = int(self.strength_bonus) + int(self.active_inventory[counter].potency)
+            print(self.active_inventory[counter].potency)
+            print(self.strength_bonus)
 
 
     def stats(self):
+        print(self.strength_bonus)
         self.life = (self.level*4) + self.life_bonus
-        self.strength = (self.level*4) + self.stregth_bonus
+        self.strength = (self.level*4) + self.strength_bonus
         self.defence = (self.level*2) + self.defence_bonus
+        print(self.strength_bonus)
+        print(self.strength)
 
 
 class Enemy:
@@ -178,6 +179,7 @@ create_enemy()
 
 
 def choice_A(i):
+    i.stats()
     damage = i.strength
     for i in range(0,len(enemy_list)):
         enemy_list[i].name = names_list[i]
@@ -194,11 +196,11 @@ def choice_A(i):
         enemy_list[victim].life = enemy_list[victim].life - (damage - enemy_list[victim].defence)
         print(enemy_list[victim].life)
         if enemy_list[victim].life <= 0:
-            if enemy.list[victim].item.effect_type == "A":               
-                i.active_inventory.append(enemy_list[victim].item)
+            if enemy_list[victim].item.effect_type == "A":               
+                party_list[i].active_inventory.append(enemy_list[victim].item)
             else:
-                i.passive_inventory.append(enemy_list[victim].item)
-            print("The enemy dropped a: " + enemy_list[victim].item.name + " and " + i.name + " picked it up.")
+                party_list[i].passive_inventory.append(enemy_list[victim].item)
+            print("The enemy dropped a: " + enemy_list[victim].item.name + " and " + party_list[i].name + " picked it up.")
             enemy_list.pop(victim)
             print(len(enemy_list))
             
@@ -222,7 +224,7 @@ def choice(i):
         i.defence = i.defence*2
 
     elif action == "I" or action == "ITEM":
-        if len(i.inventory) == 0:
+        if len(i.active_inventory) == 0:
             print("You have no items")
             choice(i)
         else:
@@ -265,7 +267,6 @@ def battle():
             break
         else:
             print()
-            #battle()
 
             
 
@@ -274,5 +275,4 @@ def battle():
 battle()
 
 print("It ended!")
-
 
