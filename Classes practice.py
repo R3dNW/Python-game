@@ -1,4 +1,5 @@
 #Github copy
+import random
 
 class Item:
     name = ""
@@ -275,4 +276,5 @@ def battle():
 battle()
 
 print("It ended!")
+
 
